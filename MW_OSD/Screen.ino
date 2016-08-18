@@ -36,29 +36,48 @@ char *ItoaUnPadded(int val, char *str, uint8_t bytes, uint8_t decimalpos)  {
   // Return String
   // Length
   // Decimal position
+  uint8_t length = 0;
+  int i = val;
+  for (;;) {
+    length++;
+    i = i / 10;
+    if (i == 0) 
+      break;
+  }
+  if (decimalpos > 0) {
+    if (length <= decimalpos)
+      length += decimalpos - length + 1;
+    length++;
+  }
   uint8_t neg = 0;
   if(val < 0) {
     neg = 1;
     val = -val;
-  } 
+    length++;
+  }
+    
+  if (length > bytes) return str;
 
-  str[bytes] = 0;
+  str[length] = 0;
   for(;;) {
-    if(bytes == decimalpos) {
-      str[--bytes] = DECIMAL;
-      decimalpos = 0;
-    }
-    str[--bytes] = '0' + (val % 10);
+    str[--length] = '0' + (val % 10);
     val = val / 10;
-    if(bytes == 0 || (decimalpos == 0 && val == 0))
+    if(decimalpos > 0) {
+      decimalpos--;
+      if (decimalpos == 0)
+        str[--length] = DECIMAL;
+    }
+    if(length == 0 || (decimalpos == 0 && val == 0))
       break;
   }
 
-  if(neg && bytes > 0)
-    str[--bytes] = '-';
 
-  while(bytes != 0)
-    str[--bytes] = ' ';
+  while(length != 0) {
+    if(neg && length == 1)
+      str[--length] = '-';
+    else
+      str[--length] = '0';
+  }
   return str;
 }
 
@@ -962,9 +981,9 @@ void displayAltitude(void)
 {
   int16_t altitude;
   if(Settings[S_UNITSYSTEM])
-    altitude = MwAltitude*0.032808;    // cm to feet
+    altitude = MwAltitude*0.32808;    // cm to feet
   else
-    altitude = MwAltitude/100;         // cm to mt
+    altitude = MwAltitude/10;         // cm to mt
 
   if(armed && allSec>5 && altitude > altitudeMAX)
     altitudeMAX = altitude;
@@ -975,7 +994,7 @@ void displayAltitude(void)
   if(((altitude/10)>=Settings[S_ALTITUDE_ALARM])&&(timer.Blink2hz))
     return;   
   screenBuffer[0]=MwAltitudeAdd[Settings[S_UNITSYSTEM]];
-  itoa(altitude,screenBuffer+1,10);
+  ItoaUnPadded(altitude, screenBuffer+1, 10, 1);
   MAX7456_WriteString(screenBuffer,getPosition(MwAltitudePosition));
 #ifdef SHOW_MAX_ALTITUDE
   itoa(altitudeMAX,screenBuffer+1,10);
@@ -1143,6 +1162,12 @@ void displayCursor(void)
     }
 #endif
 
+#endif
+#ifdef MENU_RC_2
+    if(configPage==MENU_RC_2){
+      COL=3;
+      cursorpos=(ROW+2)*30+10+6+6;
+    }
 #endif
 #ifdef MENU_SERVO
     if(configPage==MENU_SERVO){
@@ -1389,6 +1414,18 @@ void displayConfigScreen(void)
       MAX7456_WriteString(itoa(MenuBuffer[X],screenBuffer,10),113+(30*X));
     }
 #endif
+  }
+#endif
+#ifdef MENU_RC_2
+  if(configPage==MENU_RC_2)
+  {
+    MenuBuffer[0]=rcYawExpo8;
+    MenuBuffer[1]=rcDeadband;
+    MenuBuffer[2]=rcYawDeadband;
+    for(uint8_t X=0; X<=2; X++) {
+      MAX7456_WriteString_P(PGMSTR(&(menu_rc_2[X])),ROLLT+(X*30));
+      MAX7456_WriteString(itoa(MenuBuffer[X],screenBuffer,10),113+(30*X));
+    }
   }
 #endif
 #ifdef MENU_SERVO
@@ -1968,4 +2005,3 @@ void displayAlarms() {
 void showAlarms() {
 
 }
-

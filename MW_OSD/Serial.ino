@@ -418,6 +418,15 @@ void serialMSPCheck()
       modeMSPRequests &=~ REQ_MSP_RC_TUNING;
     #endif
   }
+  
+  if (cmdMSP==MSP_RC_DEADBAND)
+  {
+      rcDeadband = read8();
+      rcYawDeadband = read8();
+      rcAltHoldDeadband = read8();
+      modeMSPRequests &=~ REQ_MSP_RC_DEADBAND;
+  }
+  
 #ifdef USE_MSP_PIDNAMES
   if (cmdMSP==MSP_PIDNAMES)
   {
@@ -829,6 +838,16 @@ void serialMenuCommon()
   #endif
 #endif
 
+#ifdef MENU_RC_2
+  if (configPage == MENU_RC_2 && COL == 3) {
+    switch(ROW) {
+    case 1: rcYawExpo8 += menudir; break;
+    case 2: rcDeadband += menudir; break;
+    case 3: rcYawDeadband += menudir; break;
+    }
+  }
+#endif
+
 #ifdef MENU_FIXEDWING
   if (configPage == MENU_FIXEDWING && COL == 3) {
     switch(ROW) {
@@ -1147,6 +1166,14 @@ void configSave()
   mspWriteChecksum();
  #endif
 
+#if defined ENABLE_MSP_RC_DEADBAND
+  mspWriteRequest(MSP_SET_RC_DEADBAND,3);
+  mspWrite8(rcDeadband);
+  mspWrite8(rcYawDeadband);
+  mspWrite8(rcAltHoldDeadband);
+  mspWriteChecksum();
+#endif
+
 #if defined CORRECT_MSP_BF1
   mspWriteRequest(MSP_SET_CONFIG,25);
   bfconfig[18] =rollRate;
@@ -1229,4 +1256,3 @@ void setFCProfile()
   setMspRequests();
   delay(100);
 }
-

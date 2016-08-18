@@ -30,8 +30,8 @@
 //#define LIBREPILOT                 // Uncomment this if you are using the latest LibrePilot MSP Module
 //#define TAULABS                   // Uncomment this if you are using the latest Tau Labs MSP Module
 //#define DRONIN                    // Uncomment this if you are using the latest DRONIN MSP Module
-#define CLEANFLIGHT               // Uncomment this if you are using latest CLEANFLIGHT version from repository (1.11.0 at time of this MWOSD release)
-//#define BETAFLIGHT                // Uncomment this if you are using BETAFLIGHT (same as CLEANFLIGHT at time of this MWOSD release)
+//#define CLEANFLIGHT               // Uncomment this if you are using latest CLEANFLIGHT version from repository (1.11.0 at time of this MWOSD release)
+#define BETAFLIGHT                // Uncomment this if you are using BETAFLIGHT (same as CLEANFLIGHT at time of this MWOSD release)
 //#define FIXEDWING_BF              // Uncomment this if you are using fixed wing Baseflight 
 //#define FIXEDWING_BF_SERVO        // Uncomment this if you are using fixed wing Baseflight with additional SERVO adjustment menu.
 //#define HARAKIRI                  // Uncomment this if you are using HARAKIRI (for BOXNAMES compatibility)
@@ -166,12 +166,12 @@
 /********************       CALLSIGN settings      *********************/
 #define   CALLSIGNINTERVAL 60      // How frequently to display Callsign (in seconds)
 #define   CALLSIGNDURATION 4       // How long to display Callsign (in seconds)
-//#define CALLSIGNALWAYS           // Alternative option - enable to permanently display callsign.
+#define   CALLSIGNALWAYS           // Alternative option - enable to permanently display callsign.
 //#define FREETEXTLLIGHTS          // Alternative option - enable to display freetext (or callsign) when LLIGHTS Switch active on TX.
 //#define FREETEXTGIMBAL           // Alternative option - enable to display freetext (or callsign) when GIMBAL Switch active on TX.
 
 /********************       STARTUP settings      *********************/
-#define INTRO_VERSION               "MWOSD - DEV 1.6.1.0" // Call the OSD something else if you prefer. 
+#define INTRO_VERSION               "MWOSD - 1.6.1 @ Z1.TEAM" // Call the OSD something else if you prefer. 
 #define INTRO_MENU                  // Enable to display TX stick MENU 
 #define INTRO_CALLSIGN            // Enable to display callsign at startup
 #define INTRO_SIGNALTYPE          // Enable to display video type at startup
@@ -240,8 +240,8 @@
 
 
 /********************       Voltage Warning Settings         ************************/
-//#define AUTOCELL                  // Uncomment this to use automatic cell count and voltage warning. Overrides GUI/OSD voltage warning setting. Usefull if using different cell count batteries.
-//#define FC_VOLTAGE_CONFIG         // Additionally uncomment this if you want to use the vbat voltage config with BASEFLIGHT and CLEANFLIGHT on the flight controller (include: min cell voltage, max cell voltage and warning cell voltage)
+#define AUTOCELL                  // Uncomment this to use automatic cell count and voltage warning. Overrides GUI/OSD voltage warning setting. Usefull if using different cell count batteries.
+#define FC_VOLTAGE_CONFIG         // Additionally uncomment this if you want to use the vbat voltage config with BASEFLIGHT and CLEANFLIGHT on the flight controller (include: min cell voltage, max cell voltage and warning cell voltage)
 //The following variables are available for adjustment unless using FC_VOLTAGE_CONFIG 
 #define CELL_VOLTS_WARN 35          // Specify the cell voltage level at which low voltage warning takes place eg. 35 = 3.5 volts per cell
 #define CELL_VOLTS_MIN 34           // Specify the cell voltage at which it is considered empty
@@ -287,9 +287,3 @@
 #define AUTOTHROTTLE 
 #define HIGHTHROTTLE 1900                // Maximum recognised value for throttle 
 #define LOWTHROTTLE  1100                // Minimum recognised value for throttle
-
-
-
-
-
-

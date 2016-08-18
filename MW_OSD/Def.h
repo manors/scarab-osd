@@ -101,19 +101,23 @@
   #define AMPERAGE_DIV 10
   #define CORRECT_MSP_CF2
   #define CORRECT_MENU_RCT2
+  #define CORRECTLOOPTIME
   #define ENABLE_MSP_SAVE_ADVANCED
   #define ACROPLUS
+  #define ENABLE_MSP_RC_DEADBAND
 
   #define MENU_STAT     0       //STATISTICS
   #define MENU_PID      1       //PID CONFIG
+  #define MENU_PID_VEL
   #define MENU_RC       2       //RC TUNING
-  #define MENU_VOLTAGE  3       //VOLTAGE
-  #define MENU_RSSI     4       //RSSI
-  #define MENU_CURRENT  5       //CURRENT
-  #define MENU_DISPLAY  6       //DISPLAY
-  #define MENU_ADVANCED 7       //ADVANCED
-  #define MENU_ALARMS   8       //ALARMS
-  #define MENU_PROFILE  9       //PROFILE+PID CONTROLLER
+  #define MENU_RC_2     3       //RC TUNING 2
+  #define MENU_VOLTAGE  4       //VOLTAGE
+  #define MENU_RSSI     5       //RSSI
+  #define MENU_CURRENT  6       //CURRENT
+  #define MENU_DISPLAY  7       //DISPLAY
+  #define MENU_ADVANCED 8       //ADVANCED
+  #define MENU_ALARMS   9       //ALARMS
+  #define MENU_PROFILE  10      //PROFILE+PID CONTROLLER
   #define MAXPAGE       MENU_PROFILE
 #endif
 
@@ -122,18 +126,20 @@
   #define CORRECT_MSP_CF2
   #define CORRECT_MENU_RCT2
   #define ENABLE_MSP_SAVE_ADVANCED
+  #define ENABLE_MSP_RC_DEADBAND
 
   #define MENU_STAT     0       //STATISTICS
   #define MENU_PID      1       //PID CONFIG
-    #define MENU_PID_VEL
+  #define MENU_PID_VEL
   #define MENU_RC       2       //RC TUNING
-  #define MENU_VOLTAGE  3       //VOLTAGE
-  #define MENU_RSSI     4       //RSSI
-  #define MENU_CURRENT  5       //CURRENT
-  #define MENU_DISPLAY  6       //DISPLAY
-  #define MENU_ADVANCED 7       //ADVANCED
-  #define MENU_ALARMS   8       //ALARMS
-  #define MENU_PROFILE  9       //PROFILE+PID CONTROLLER
+  #define MENU_RC_2     3       //RC TUNING 2
+  #define MENU_VOLTAGE  4       //VOLTAGE
+  #define MENU_RSSI     5       //RSSI
+  #define MENU_CURRENT  6       //CURRENT
+  #define MENU_DISPLAY  7       //DISPLAY
+  #define MENU_ADVANCED 8       //ADVANCED
+  #define MENU_ALARMS   9       //ALARMS
+  #define MENU_PROFILE  10      //PROFILE+PID CONTROLLER
   #define MAXPAGE       MENU_PROFILE
   #define CORRECTLOOPTIME
 #endif
@@ -618,4 +624,3 @@
     #define BAUDRATE 115200
   #endif // PROTOCOL_MAVLINK
 #endif // BAUDRATE
-

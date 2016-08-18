@@ -551,6 +551,9 @@ static uint8_t thrMid8;
 static uint8_t thrExpo8;
 static uint16_t tpa_breakpoint16;
 static uint8_t rcYawExpo8;
+static uint8_t rcDeadband;
+static uint8_t rcYawDeadband;
+static uint8_t rcAltHoldDeadband;
 static uint8_t FCProfile;
 static uint8_t PreviousFCProfile;
 static uint8_t CurrentFCProfile;
@@ -715,6 +718,7 @@ uint16_t flyingTime=0;
 #define MSP_BOXIDS               119   //out message         get the permanent IDs associated to BOXes
 #define MSP_SERVO_CONF           120    //out message         Servo settings
 #define MSP_NAV_STATUS           121   //out message	     Returns navigation status
+#define MSP_RC_DEADBAND          125    //out message         deadbands for yaw alt pitch roll
 
 #define MSP_CELLS                130   //out message         FrSky SPort Telemtry
 
@@ -731,6 +735,7 @@ uint16_t flyingTime=0;
 #define MSP_SELECT_SETTING       210   //in message          Select Setting Number (0-2)
 #define MSP_SET_HEAD             211   //in message          define a new heading hold direction
 #define MSP_SET_SERVO_CONF       212    //in message          Servo settings
+#define MSP_SET_RC_DEADBAND      218    //in message          deadbands for yaw alt pitch roll
 
 #define MSP_BIND                 240   //in message          no param
 
@@ -929,6 +934,11 @@ const char configMsg27[] PROGMEM = "THROTTLE EXPO";
   const char configMsg23b[] PROGMEM = "PITCH RATE";
   const char configMSg28[]  PROGMEM = "TPA BREAKPOINT";
 #endif
+//-----------------------------------------------------------Page2_2
+const char configMsg20_0[] PROGMEM = "RC TUNING MORE";
+const char configMsg20_1[] PROGMEM = "YAW EXPO";
+const char configMsg20_2[] PROGMEM = "RC DEADBAND";
+const char configMsg20_3[] PROGMEM = "YAW DEADBAND";
 //-----------------------------------------------------------Page3
 const char configMsg30[] PROGMEM = "VOLTAGE";
 const char configMsg31[] PROGMEM = "DISPLAY MAIN VOLTS";
@@ -1058,6 +1068,7 @@ const unsigned char MwGPSAltPositionAdd[2]={
 #define REQ_MSP_FW_CONFIG      (1L<<20) 
 #define REQ_MSP_PIDNAMES       (1L<<21)
 #define REQ_MSP_SERVO_CONF     (1L<<22)
+#define REQ_MSP_RC_DEADBAND    (1L<<23)
 
 // Menu selections
 const PROGMEM char * const menu_choice_unit[] =
@@ -1148,6 +1159,13 @@ const PROGMEM char * const menu_rc[] =
     configMsg27,
   #endif
 
+};
+
+const PROGMEM char * const menu_rc_2[] = 
+{   
+    configMsg20_1,
+    configMsg20_2,
+    configMsg20_3,
 };
 
 const PROGMEM char * const menu_bat[] = 
@@ -1259,6 +1277,9 @@ const PROGMEM char * const menutitle_item[] =
 #endif
 #ifdef MENU_RC
   configMsg20,
+#endif
+#ifdef MENU_RC_2
+  configMsg20_0,
 #endif
 #ifdef MENU_SERVO
   configMsg120,
@@ -1523,4 +1544,3 @@ struct __Kvar {
 Kvar;
 
 #endif // PROTOCOL_KISS
-

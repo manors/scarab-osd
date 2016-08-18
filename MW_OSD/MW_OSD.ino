@@ -362,6 +362,9 @@ void loop()
       case REQ_MSP_RC_TUNING:
         MSPcmdsend = MSP_RC_TUNING;
         break;
+      case REQ_MSP_RC_DEADBAND:
+        MSPcmdsend = MSP_RC_DEADBAND;
+        break;
       case REQ_MSP_PID_CONTROLLER:
         MSPcmdsend = MSP_PID_CONTROLLER;
         break;
@@ -785,6 +788,10 @@ void setMspRequests() {
     
 #ifdef USE_FC_VOLTS_CONFIG
     modeMSPRequests |= REQ_MSP_MISC;
+#endif
+
+#ifdef ENABLE_MSP_RC_DEADBAND
+  modeMSPRequests |= REQ_MSP_RC_DEADBAND;
 #endif
 
   }
