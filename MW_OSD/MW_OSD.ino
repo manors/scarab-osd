@@ -121,11 +121,34 @@ boolean ledstatus=HIGH;
 #endif
 
 
+//Check UART port is idle, if not abort osd setup.
+void CheckSerialIdle() {
+  long serialTune = 0;
+  bool lv = digitalRead(0);
+  for(int i = 0; i < 3000; i++) {
+    delay(1);
+    bool nv = digitalRead(0);
+    if (lv != nv) {
+      lv = nv;
+      serialTune++;
+    }
+  }
+  if (serialTune != 0) {
+    bool ledTune = false;
+    pinMode(LEDPIN,OUTPUT);
+    while (true) {
+      digitalWrite(LEDPIN,ledTune ? LOW : HIGH);
+      ledTune = !ledTune;
+      delay(1000);
+    }
+  }
+}
 
 //------------------------------------------------------------------------
 void setup()
 {
 
+  CheckSerialIdle();
   Serial.begin(BAUDRATE);
 //---- override UBRR with MWC settings
   uint8_t h = ((F_CPU  / 4 / (BAUDRATE) -1) / 2) >> 8;
