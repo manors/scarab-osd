@@ -123,40 +123,30 @@ boolean ledstatus=HIGH;
 
 //Check UART port is idle, if not abort osd setup.
 void CheckSerialIdle() {
+  const byte TXPIN = 1;
+  pinMode(TXPIN, INPUT);
   long serialTune = 0;
-  bool lv = digitalRead(0);
-  for(int i = 0; i < 3000; i++) {
-    delay(1);
-    bool nv = digitalRead(0);
+  bool lv = digitalRead(TXPIN);
+  while (millis() < 3000) {
+    bool nv = digitalRead(TXPIN);
     if (lv != nv) {
       lv = nv;
       serialTune++;
     }
   }
-  if (serialTune != 0) {
-    bool ledTune = false;
-    pinMode(LEDPIN,OUTPUT);
-    while (true) {
-      digitalWrite(LEDPIN,ledTune ? LOW : HIGH);
-      ledTune = !ledTune;
-      delay(1000);
-    }
+  while (serialTune > 0) {
+    char str[] = "SERIAL BUSY:";
+    itoa(serialTune, screenBuffer, 10);
+    MAX7456_WriteString(str, 8*30+8); 
+    MAX7456_WriteString(screenBuffer, 8*30+21); 
+    MAX7456_DrawScreen();
+    delay(1000);
   }
 }
 
 //------------------------------------------------------------------------
 void setup()
 {
-
-  CheckSerialIdle();
-  Serial.begin(BAUDRATE);
-//---- override UBRR with MWC settings
-  uint8_t h = ((F_CPU  / 4 / (BAUDRATE) -1) / 2) >> 8;
-  uint8_t l = ((F_CPU  / 4 / (BAUDRATE) -1) / 2);
-  UCSR0A  |= (1<<U2X0); UBRR0H = h; UBRR0L = l; 
-//---
-  Serial.flush();
-
   pinMode(PWMRSSIPIN, INPUT);
   pinMode(RSSIPIN, INPUT);
   pinMode(LEDPIN,OUTPUT);
@@ -201,6 +191,14 @@ void setup()
     armed=1;
   #endif //ALWAYSARMED
 
+  CheckSerialIdle();
+  Serial.begin(BAUDRATE);
+//---- override UBRR with MWC settings
+  uint8_t h = ((F_CPU  / 4 / (BAUDRATE) -1) / 2) >> 8;
+  uint8_t l = ((F_CPU  / 4 / (BAUDRATE) -1) / 2);
+  UCSR0A  |= (1<<U2X0); UBRR0H = h; UBRR0L = l; 
+//---
+  Serial.flush();
 }
 
 //------------------------------------------------------------------------
